@@ -35,6 +35,7 @@ class AnalysisRequest(BaseModel):
 app = FastAPI(title="AI Agent API", version="1.0.0")
 
 
+# Health check endpoint — confirms the service is running and lists all available endpoints
 @app.get("/")
 def health():
     return {
@@ -45,6 +46,7 @@ def health():
     }
 
 
+# Answers any question using Claude with optional context — the core Q&A endpoint for client support automation
 @app.post("/ask")
 async def ask(request: QuestionRequest):
     try:
@@ -63,6 +65,7 @@ async def ask(request: QuestionRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Runs the full three-agent research pipeline — Researcher searches the web, Writer drafts the report, returns both research notes and the full report
 @app.post("/research")
 async def research(request: ResearchRequest):
     try:
@@ -97,6 +100,7 @@ async def research(request: ResearchRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Analyses any data passed as a string — CSV, JSON, or plain text — and returns a written business insight report with trends, patterns, and recommended actions
 @app.post("/analyse")
 async def analyse(request: AnalysisRequest):
     try:
